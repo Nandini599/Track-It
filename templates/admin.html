@@ -5,6 +5,13 @@
 {% block content %}
 <h2 style="margin-bottom: 2rem;">Admin Panel</h2>
 
+<!-- Quick Action Buttons -->
+<div style="margin-bottom: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+    <a href="{{ url_for('admin_performance') }}" class="btn" style="background-color: var(--secondary-color); width: auto; padding: 0.75rem 1.5rem;">
+        📊 View Student Performance
+    </a>
+</div>
+
 <div class="metrics-grid">
     <div class="metric-card">
         <div class="metric-icon">

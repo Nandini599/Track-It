@@ -232,6 +232,38 @@ def upload_video():
         
     return redirect(url_for('admin_dashboard'))
 
+@app.route('/admin/performance')
+def admin_performance():
+    if session.get('role') != 'admin':
+        return redirect(url_for('home'))
+        
+    # Get all students
+    students = User.query.filter_by(role='student').all()
+    
+    # Build performance data
+    performance_data = []
+    for student in students:
+        progress_records = Progress.query.filter_by(user_id=student.id).all()
+        
+        for prog in progress_records:
+            video = prog.video
+            subject = video.subject
+            watched_minutes = round(prog.watched_duration / 60, 2)
+            video_duration_minutes = round(video.duration / 60, 2)
+            
+            performance_data.append({
+                'student_name': student.name,
+                'student_email': student.email,
+                'subject': subject.name,
+                'video_title': video.title,
+                'watched_minutes': watched_minutes,
+                'video_duration_minutes': video_duration_minutes,
+                'completed': prog.completed,
+                'progress_percentage': round((prog.watched_duration / max(video.duration, 1)) * 100, 1)
+            })
+    
+    return render_template('admin_performance.html', performance_data=performance_data, total_students=len(students))
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
