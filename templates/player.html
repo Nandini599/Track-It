@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Watching {{ video.title }} - Track It{% endblock %}
+
+{% block content %}
+<div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 2rem;">
+    <h2>{{ video.title }}</h2>
+    <a href="{{ url_for('videos', subject_id=video.subject_id) }}" class="btn btn-secondary" style="width: auto; padding: 0.5rem 1rem; font-size: 0.9rem;">Back to {{ video.subject.name }}</a>
+</div>
+
+<div class="video-container">
+    <video 
+        id="learning-video" 
+        controls 
+        data-video-id="{{ video.id }}"
+        style="width: 100%; border-radius: 1rem;">
+        <!-- the path shouldn't start with static/ here but rather with url_for -->
+        <source src="{{ url_for('static', filename=video.file_path) }}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</div>
+
+<div class="video-info">
+    <h3 style="margin-bottom: 1rem;">Lesson Info</h3>
+    <p style="color: var(--text-muted); line-height: 1.6;">
+        You're currently watching <strong>{{ video.title }}</strong> from the <strong>{{ video.subject.name }}</strong> module. 
+        Your progress is automatically saved to your dashboard. Make sure to watch carefully!
+    </p>
+
+    <div style="margin-top: 1.5rem; background-color: var(--bg-color); padding: 1rem; border-radius: 0.5rem;">
+        <p style="font-size: 0.9rem; font-weight: 500;">
+            Status: 
+            {% if progress.completed %}
+                <span style="color: var(--secondary-color);">Completed</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px; margin-left: 0.5rem; color: var(--secondary-color);"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            {% else %}
+                <span style="color: var(--primary-color);">In Progress</span>
+                <span style="color: var(--text-muted); font-size: 0.8rem; margin-left: 0.5rem;">(Watched: {{ "%.1f"|format(progress.watched_duration / 60) }} min)</span>
+            {% endif %}
+        </p>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/video_tracker.js') }}"></script>
+{% endblock %}

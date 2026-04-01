@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Courses - Track It{% endblock %}
+
+{% block content %}
+<h2 style="margin-bottom: 2rem;">Available Courses</h2>
+
+{% if subjects %}
+<div class="cards-grid">
+    {% for subject in subjects %}
+    <a href="{{ url_for('videos', subject_id=subject.id) }}" class="card">
+        <div class="card-img">
+            <!-- Icon -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                <polyline points="2 17 12 22 22 17"></polyline>
+                <polyline points="2 12 12 17 22 12"></polyline>
+            </svg>
+        </div>
+        <div class="card-content">
+            <h3 class="card-title">{{ subject.name }}</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">{{ subject.videos|length }} Video{{ 's' if subject.videos|length != 1 else '' }} available</p>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% else %}
+<div style="text-align: center; padding: 4rem 2rem; background-color: var(--surface-color); border-radius: 1rem;">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 64px; height: 64px; color: var(--text-muted); margin-bottom: 1rem;">
+        <circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line>
+    </svg>
+    <h3 style="color: var(--text-color); margin-bottom: 0.5rem;">No courses available yet</h3>
+    <p style="color: var(--text-muted);">Administrators need to create subjects and upload videos.</p>
+</div>
+{% endif %}
+{% endblock %}

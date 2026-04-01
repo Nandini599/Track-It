@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}Reports & Analytics - Track It{% endblock %}
+
+{% block head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<h2 style="margin-bottom: 2rem;">Learning Progress Report</h2>
+
+<div style="background-color: var(--surface-color); padding: 2rem; border-radius: 1rem; box-shadow: var(--shadow-sm); margin-bottom: 2rem;">
+    <h3 style="margin-bottom: 1.5rem; color: var(--text-color);">Subject-wise Learning Progress (Minutes)</h3>
+    <div style="height: 400px; position: relative;">
+        <canvas id="progressChart"></canvas>
+    </div>
+</div>
+
+{% if not stats %}
+<div style="text-align: center; color: var(--text-muted); padding: 2rem;">
+    <p>No learning data recorded yet. Start watching videos to populate your analytics!</p>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const ctx = document.getElementById('progressChart');
+        if (!ctx) return;
+
+        // Data from Flask
+        const rawData = {{ stats|tojson }};
+        const labels = rawData.map(d => d.subject);
+        const dataTime = rawData.map(d => d.time);
+
+        let chartInstance = null;
+
+        window.renderCharts = () => {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            const textColor = isDark ? '#9ca3af' : '#6c757d';
+            const gridColor = isDark ? '#374151' : '#e5e7eb';
+            
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Study Time (Minutes)',
+                        data: dataTime,
+                        backgroundColor: 'rgba(99, 102, 241, 0.8)',
+                        borderColor: 'rgba(99, 102, 241, 1)',
+                        borderWidth: 1,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: textColor } }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: gridColor },
+                            ticks: { color: textColor }
+                        },
+                        x: {
+                            grid: { color: gridColor },
+                            ticks: { color: textColor }
+                        }
+                    }
+                }
+            });
+        };
+
+        // Render once on load
+        renderCharts();
+    });
+</script>
+{% endblock %}

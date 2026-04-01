@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome to Track It{% endblock %}
+
+{% block content %}
+<div style="text-align: center; padding: 4rem 2rem;">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 80px; height: 80px; color: var(--primary-color); margin-bottom: 2rem;">
+        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+        <polyline points="2 17 12 22 22 17"></polyline>
+        <polyline points="2 12 12 17 22 12"></polyline>
+    </svg>
+    <h1 style="font-size: 3rem; margin-bottom: 1rem; color: var(--text-color);">Track It</h1>
+    <p style="font-size: 1.25rem; color: var(--text-muted); margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+        Your ultimate student learning and analytics dashboard. Learn, track, and analyze your growth across modules like AI, ML, NLP, and more.
+    </p>
+    <div style="display: flex; justify-content: center; gap: 1rem;">
+        <a href="{{ url_for('login') }}" class="btn" style="width: auto; padding: 1rem 2rem;">Login to Dashboard</a>
+        <a href="{{ url_for('signup') }}" class="btn btn-secondary" style="width: auto; padding: 1rem 2rem;">Get Started Free</a>
+    </div>
+</div>
+{% endblock %}

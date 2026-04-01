@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Track It{% endblock %}
+
+{% block content %}
+<h2 style="margin-bottom: 2rem;">Overview</h2>
+
+<div class="metrics-grid">
+    <div class="metric-card">
+        <div class="metric-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        </div>
+        <div class="metric-info">
+            <h4>Total Study Time</h4>
+            <p>{{ stats.total_study_time }} min</p>
+        </div>
+    </div>
+    <div class="metric-card">
+        <div class="metric-icon" style="background-color: rgba(16, 185, 129, 0.1); color: var(--secondary-color);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+        </div>
+        <div class="metric-info">
+            <h4>Videos Completed</h4>
+            <p>{{ stats.videos_completed }}</p>
+        </div>
+    </div>
+</div>
+
+<div style="background-color: var(--surface-color); padding: 2rem; border-radius: 1rem; box-shadow: var(--shadow-sm);">
+    <h3 style="margin-bottom: 1rem; color: var(--text-color);">Ready to continue learning?</h3>
+    <a href="{{ url_for('subjects') }}" class="btn" style="width: auto; padding: 0.75rem 1.5rem; display: inline-flex; align-items: center; gap: 0.5rem;">
+        Browse Courses
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+    </a>
+</div>
+{% endblock %}
