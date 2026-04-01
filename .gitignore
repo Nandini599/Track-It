@@ -48,3 +48,16 @@ Thumbs.db
 # Logs
 error.txt
 *.log
+
+# Videos - Don't commit large video files
+static/videos/
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.flv
+*.wmv
+*.webm
+*.m4v
+*.3gp
+*.ogv
