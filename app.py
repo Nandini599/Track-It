@@ -3,6 +3,12 @@ from flask import Flask, render_template, request, redirect, url_for, flash, ses
 from werkzeug.utils import secure_filename
 from models import db, User, Subject, Video, Progress
 
+try:
+    from moviepy.editor import VideoFileClip
+    MOVIEPY_AVAILABLE = True
+except ImportError:
+    MOVIEPY_AVAILABLE = False
+
 app = Flask(__name__)
 
 # Configurations
@@ -222,7 +228,18 @@ def upload_video():
         # relative path for serving
         rel_path = f'videos/{filename}'
         
-        new_vid = Video(title=title, subject_id=subject_id, file_path=rel_path)
+        # Extract video duration
+        duration_seconds = 0
+        if MOVIEPY_AVAILABLE:
+            try:
+                clip = VideoFileClip(file_path)
+                duration_seconds = int(clip.duration)
+                clip.close()
+            except Exception as e:
+                flash(f'Warning: Could not read video duration - {str(e)}', 'warning')
+                duration_seconds = 0
+        
+        new_vid = Video(title=title, subject_id=subject_id, file_path=rel_path, duration=duration_seconds)
         db.session.add(new_vid)
         db.session.commit()
         
